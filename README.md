@@ -3,7 +3,7 @@
 A modern Retrieval-Augmented Generation (RAG) app for PDF question answering. Upload a PDF, ask grounded questions, inspect cited sources, export conversations, and toggle a futuristic dark mode with an animated space-style background.
 
 ## Demo Video
-https://github.com/user-attachments/assets/9467b278-ed1d-49a4-bbea-c4f50f4a3cc7
+
 
 
 ## Highlights
