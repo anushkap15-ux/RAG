@@ -4,7 +4,7 @@ A modern Retrieval-Augmented Generation (RAG) app for PDF question answering. Up
 
 ## Demo Video
 
-
+https://github.com/user-attachments/assets/4d677094-f829-4526-98f5-d803102b78ce
 
 ## Highlights
 
