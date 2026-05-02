@@ -1,0 +1,41 @@
+Project Explanation: Document Q&A System
+
+What this project does
+
+This is a local Flask web app that lets a user upload a PDF and ask questions about the text inside that PDF. The system answers by searching only the uploaded document and shows source snippets with page numbers so the response can be verified.
+
+How it works
+
+1. The browser sends a PDF to the Flask backend.
+2. The backend saves the file in the uploads folder.
+3. PyMuPDF reads the PDF and extracts selectable text from each page.
+4. The text is split into overlapping chunks so the app can search smaller pieces of content.
+5. scikit-learn builds a TF-IDF index over those chunks.
+6. When the user asks a question, the app compares the question to every chunk with cosine similarity.
+7. The best matching chunks are turned into a short extractive answer.
+8. The UI shows the answer and the matching source snippets.
+
+What it is using
+
+- Flask for the web server and API routes.
+- PyMuPDF (fitz) for reading PDF text.
+- scikit-learn for TF-IDF vectorization and cosine similarity ranking.
+- Vanilla HTML, CSS, and JavaScript for the frontend.
+
+Main files
+
+- app.py: Flask entry point with upload and question endpoints.
+- qa/pdf_loader.py: extracts and cleans text from PDF pages.
+- qa/chunker.py: breaks pages into overlapping text chunks.
+- qa/retriever.py: ranks chunks using TF-IDF similarity.
+- qa/answerer.py: builds the final answer from the best matches.
+- qa/document_store.py: keeps uploaded document data in memory.
+- templates/index.html: page layout.
+- static/app.js: upload and question flow in the browser.
+- static/style.css: visual styling.
+
+Design notes
+
+The app is intentionally local and lightweight. It does not call an external LLM or cloud search API. That keeps the project simple, fast to run, and easy to understand. It works best on PDFs that contain selectable text. Scanned documents need OCR before they can be indexed.
+
+If you want to improve it later, the most natural upgrades are semantic embeddings, persistent storage, and OCR support for image-only PDFs.

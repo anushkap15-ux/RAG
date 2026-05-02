@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Advanced RAG Workbench</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <script>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem('darkMode');
+          if (savedTheme === null || savedTheme === 'true') {
+            document.body.classList.add('dark-mode');
+          }
+        } catch (error) {
+          document.body.classList.add('dark-mode');
+        }
+      })();
+    </script>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Document workspace">
+        <header class="brand">
+          <p class="eyebrow">📄 Local PDF RAG</p>
+          <h1>RAG Workbench</h1>
+        </header>
+
+  <button id="theme-toggle" class="theme-toggle" title="Toggle dark mode">🌙</button>
+        <form id="upload-form" class="dropzone">
+          <input id="pdf" name="file" type="file" accept="application/pdf" required>
+          <label for="pdf" id="drop-label">
+            <span class="drop-icon" aria-hidden="true">📤</span>
+            <strong>Drop a PDF or browse</strong>
+            <small>Indexes text locally, retrieves relevant passages, answers with citations.</small>
+          </label>
+          <button type="submit" class="primary">Index document</button>
+        </form>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Documents</h2>
+            <button id="clear-docs" class="ghost" type="button" title="Clear all documents">🗑️</button>
+          </div>
+          <div id="document-list" class="document-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Retrieval</h2>
+            <output id="top-k-value" for="top-k">4</output>
+          </div>
+          <input id="top-k" type="range" min="1" max="10" value="4">
+          <p class="fineprint">Controls how many chunks are retrieved and ranked by relevance.</p>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Tools</h2>
+          </div>
+          <button type="button" id="export-history" class="ghost" style="width: 100%; justify-content: center;">💾 Export Chat</button>
+          <button type="button" id="show-stats" class="ghost" style="width: 100%; justify-content: center;">📊 Statistics</button>
+        </section>
+      </aside>
+
+      <section class="main-stage">
+        <header class="topbar">
+          <div>
+            <p id="active-label" class="eyebrow">No active document</p>
+            <h2 id="active-title">Upload a PDF to start asking grounded questions.</h2>
+          </div>
+          <div id="status" class="status idle">Ready</div>
+        </header>
+
+        <section class="metrics" aria-label="Document statistics">
+          <article>
+            <span id="metric-pages">0</span>
+            <small>Pages</small>
+          </article>
+          <article>
+            <span id="metric-chunks">0</span>
+            <small>Chunks</small>
+          </article>
+          <article>
+            <span id="metric-confidence">0%</span>
+            <small>Avg Relevance</small>
+          </article>
+        </section>
+
+        <section class="chat-panel" aria-label="Question and answer">
+          <div id="chat-log" class="chat-log" aria-live="polite">
+            <article class="message assistant">
+              <div class="avatar">AI</div>
+              <div class="bubble">
+                <p>Welcome! Upload a PDF, select it as active, and ask questions. I'll answer using only information from the document with full citations.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="prompt-shelf" aria-label="Suggested questions">
+            <button type="button" data-prompt="What is the main objective or purpose?">Objective</button>
+            <button type="button" data-prompt="What are the key requirements or constraints?">Requirements</button>
+            <button type="button" data-prompt="Summarize this document in 5 bullet points">Summary</button>
+            <button type="button" data-prompt="What is the conclusion or outcome?">Conclusion</button>
+          </div>
+
+          <form id="question-form" class="composer">
+            <textarea id="question" rows="2" placeholder="Ask a question about the active document" disabled></textarea>
+            <button type="submit" class="primary" disabled>Ask</button>
+          </form>
+        </section>
+      </section>
+
+      <aside class="inspector" aria-label="Sources and search">
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Search</h2>
+          </div>
+          <form id="search-form" class="search-box">
+            <input id="source-query" type="search" placeholder="Find passages..." disabled>
+            <button type="submit" class="ghost" disabled>🔍</button>
+          </form>
+          <div id="search-results" class="source-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Citations</h2>
+          </div>
+          <div id="sources" class="source-list">
+            <p class="muted">Citations appear after each answer.</p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Preview</h2>
+          </div>
+          <div id="document-preview" class="preview">
+            <p class="muted">Document text preview appears here after upload.</p>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <!-- Modal for statistics -->
+    <div id="stats-modal" style="display: none;" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📊 Conversation Statistics</h3>
+        </div>
+        <div class="modal-body" id="stats-content"></div>
+        <div class="modal-footer">
+          <button type="button" class="ghost" onclick="document.getElementById('stats-modal').style.display='none'">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
