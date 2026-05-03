@@ -4,6 +4,8 @@ A modern Retrieval-Augmented Generation (RAG) app for PDF question answering. Up
 
 ## Demo Video
 
+https://github.com/user-attachments/assets/5069c497-82ed-47ce-b94b-27ff74e3addb
+
 ## Highlights
 
 - 📄 Upload and index PDFs locally
@@ -47,6 +49,67 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
 ```
+## Environment Setup (Important)
+
+This project uses **Python 3.11** because several AI/RAG libraries are fully compatible and stable on this version.
+
+### Check Python Version
+
+```bash
+py -3.11 --version
+```
+
+---
+
+### Create Virtual Environment
+
+```bash
+py -3.11 -m venv venv
+```
+
+---
+
+### Activate Virtual Environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### Linux/Mac
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+### Select Interpreter (VS Code)
+
+1. Press `Ctrl + Shift + P`
+2. Search: `Python: Select Interpreter`
+3. Select:
+
+```text
+.\venv\Scripts\python.exe
+```
+
+Make sure the interpreter version is:
+
+```text
+Python 3.11.x
+```
+
+---
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
 
 ## Run
 
